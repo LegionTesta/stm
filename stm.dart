@@ -2,15 +2,94 @@
 
 abstract class STM{
 
-  //O construtor recebe a matriz de preferência, e o número de elementos x e y
+  //O construtor recebe a matriz de preferência
   STM(List<List<int>> prefer);  
 
   //Função para realizar o stable match
   void makeStableMatch(); 
 
-  //Funçâo para ver se o elemento y prefere o elemento x1 (seu par atual) sobre o elemento x
-  bool yPrefersX1OverX();
+}
 
+class AdmissionProblem implements STM{
+
+  /*
+  Índice dos homens: 0 a N-1
+  Índice das mulheres: N a 2*N-1
+  */
+  final List<List<int>> preferenceMatrix;
+  final int N;
+  final int Q;
+
+  AdmissionProblem(this.preferenceMatrix, {this.N, this.Q});
+
+  void makeStableMatch(){
+    
+    List<Man> men = List();
+    for(int x = 0; x < N; x++){
+      men.add(Man(
+        preferenceMatrix[x],
+        -1,
+        -1
+      ));
+    }
+
+    List<Woman> women = List();
+    for(int x = 0; x < N; x++){
+      women.add(Woman(
+        preferenceMatrix[x+N],
+        Q,
+        List(),
+        List(),
+      ));
+    }
+
+    while(true){
+      Man man;
+      for(int x = 0; x < N; x++){
+        man = men[x];
+        man.currentY++;
+        women[man.preferenceList[man.currentY]-N].holdList.add(x);
+      }
+      Woman woman;
+      for(int x = 0; x < N; x++){
+        woman = women[x];
+        
+
+      }
+      break;
+    }
+  }
+}
+
+class Man extends X{
+
+  Man(List<int> preferenceList, int currentY, int currentPartner) 
+  : super(preferenceList, currentY, currentPartner);
+}
+
+class Woman extends Y{
+
+  Woman(List<int> preferenceList, int Q, List<int> holdList, List<int> partners) 
+  : super(preferenceList, Q, holdList, partners);
+}
+
+abstract class X{
+
+  final List<int> preferenceList;
+  int currentY;
+  int currentPartner;
+
+  X(this.preferenceList, this.currentY, this.currentPartner);
+}
+
+abstract class Y{
+
+  final List<int> preferenceList;
+  final int Q;
+  List<int> holdList;
+  List<int> partners;
+
+  Y(this.preferenceList, this.Q, this.holdList, this.partners);
 }
 
 //Implementação do StableMatching no cenário do StableMarriage
