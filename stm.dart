@@ -35,11 +35,17 @@ class AdmissionProblem implements STM{
 
     List<Woman> women = List();
     for(int x = 0; x < N; x++){
+
+      List<int> hash = List(N);
+      for(int y = 0; y < N; y++)
+        hash[preferenceMatrix[x+N][y]] = y;
+
       women.add(Woman(
         preferenceMatrix[x+N],
         Q,
         List(),
         List(),
+        hash
       ));
     }
 
@@ -53,8 +59,10 @@ class AdmissionProblem implements STM{
       Woman woman;
       for(int x = 0; x < N; x++){
         woman = women[x];
-        
-
+        woman.holdList.sort((a, b) => woman.hash[a].compareTo(woman.hash[b]));
+      }
+      for(int x = 0; x < N; x++){
+        print(women[x].holdList);
       }
       break;
     }
@@ -69,8 +77,8 @@ class Man extends X{
 
 class Woman extends Y{
 
-  Woman(List<int> preferenceList, int Q, List<int> holdList, List<int> partners) 
-  : super(preferenceList, Q, holdList, partners);
+  Woman(List<int> preferenceList, int Q, List<int> holdList, List<int> partners, List<int> hash) 
+  : super(preferenceList, Q, holdList, partners, hash);
 }
 
 abstract class X{
@@ -85,11 +93,12 @@ abstract class X{
 abstract class Y{
 
   final List<int> preferenceList;
+  final List<int> hash;
   final int Q;
   List<int> holdList;
   List<int> partners;
 
-  Y(this.preferenceList, this.Q, this.holdList, this.partners);
+  Y(this.preferenceList, this.Q, this.holdList, this.partners, this.hash);
 }
 
 //Implementação do StableMatching no cenário do StableMarriage
