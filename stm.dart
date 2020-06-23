@@ -1,5 +1,7 @@
 
 
+import 'dart:io';
+
 abstract class STM{
 
   //O construtor recebe a matriz de preferência
@@ -49,23 +51,48 @@ class AdmissionProblem implements STM{
       ));
     }
 
-    while(true){
-      Man man;
+    Man man;
+    Woman woman;
+
+    int j = 0;
+
+    while(j < 10){
       for(int x = 0; x < N; x++){
         man = men[x];
-        man.currentY++;
-        women[man.preferenceList[man.currentY]-N].holdList.add(x);
+        if(man.currentPartner == -1){
+          man.currentY++;
+          women[man.preferenceList[man.currentY]-N].holdList.add(x);
+        }
       }
-      Woman woman;
       for(int x = 0; x < N; x++){
         woman = women[x];
-        woman.holdList.sort((a, b) => woman.hash[a].compareTo(woman.hash[b]));
+
+        if(!(woman.holdList.isEmpty)){
+
+          woman.holdList.addAll(woman.partners);
+          woman.holdList.sort((a, b) => woman.hash[a].compareTo(woman.hash[b]));
+          woman.partners = List();
+
+          for(int y = 0; y < Q; y++){
+            try{
+              woman.partners.add(woman.holdList[y]);
+              men[woman.holdList[y]].currentPartner = x;
+            } catch(e){}
+          }
+          for(int y = Q; y < woman.holdList.length; y++){
+            men[woman.holdList[y]].currentPartner = -1;
+          }
+          woman.holdList = List();
+        }
       }
-      for(int x = 0; x < N; x++){
-        print(women[x].holdList);
-      }
-      break;
+      j++;
     }
+      print("\nHomem\tMulher");
+      for(int x = 0; x < N; x++){
+        stdout.write("\n$x\t");
+        stdout.write("${men[x].currentPartner+N}\t");
+      }
+      print("");
   }
 }
 
