@@ -1,18 +1,8 @@
 
-
 import 'dart:io';
 
-abstract class STM{
 
-  //O construtor recebe a matriz de preferência
-  STM(List<List<int>> prefer);  
-
-  //Função para realizar o stable match
-  void makeStableMatch(); 
-
-}
-
-class AdmissionProblem implements STM{
+class AdmissionProblem{
 
   /*
   Índice dos homens: 0 a N-1
@@ -130,7 +120,7 @@ abstract class Y{
 
 //Implementação do StableMatching no cenário do StableMarriage
 //https://www.geeksforgeeks.org/stable-marriage-problem/
-class StableMarriage implements STM{
+class StableMarriage{
 
   /*
   Índice dos homens: 0 a N-1
@@ -139,13 +129,13 @@ class StableMarriage implements STM{
   final List<List<int>> prefer;
   final int N;
 
-  StableMarriage(this.prefer, {this.N});
+  StableMarriage(this.prefer, this.N);
 
   void makeStableMatch(){
     
     /*
     Armazena o parceiro de cada mulher. O valor de wPartner[i] indica
-    o parceiro da mulher N+i. O valor -1 indica que a mulher N+1 está livre.
+    o parceiro da mulher N+i. O valor -1 indica que a mulher N+i está livre.
     Lista de tamanho N, todos os campos inicializados com valor -1
     */
     List<int> wPartner = List.filled(N, -1, growable: false);
@@ -192,7 +182,7 @@ class StableMarriage implements STM{
           entre a mulher w e o homem m1 é quebrado, formando um par entre a 
           mulher w e o homem m
           */
-          if(yPrefersX1OverX(w: w, m: m, m1: m1) == false){
+          if(wPrefersM1OverM(w, m, m1) == false){
             wPartner[w-N] = m;
             mFree[m] = false;
             mFree[m1] = true;
@@ -203,11 +193,11 @@ class StableMarriage implements STM{
 
     print("Mulher\tHomem");
     for(int i = 0; i < N; i++)
-      print("${i+N}\t\t${wPartner[i]}");
+      print("${i+N}\t${wPartner[i]}");
   }
 
   //woman, man
-  bool yPrefersX1OverX({int w, int m, int m1}){
+  bool wPrefersM1OverM(int w, int m, int m1){
     
     //Itera a lista de preferência da mulher w para ver se m1 aparece antes de m
     for(int i = 0; i < N; i++){
