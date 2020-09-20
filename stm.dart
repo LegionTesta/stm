@@ -9,10 +9,14 @@ class AdmissionProblem{
   Índice das mulheres: N a 2*N-1
   */
   final List<List<int>> preferenceMatrix;
-  final int N;
+  int N;
+  int M;
   final int Q;
 
-  AdmissionProblem(this.preferenceMatrix, {this.N, this.Q});
+  AdmissionProblem(this.preferenceMatrix, {this.N, this.Q}){
+    N = 4;
+    M = 3;
+  }
 
   void makeStableMatch(){
     
@@ -26,14 +30,15 @@ class AdmissionProblem{
     }
 
     List<Woman> women = List();
-    for(int x = 0; x < N; x++){
+    for(int x = 0; x < M; x++){
 
       List<int> hash = List(N);
-      for(int y = 0; y < N; y++)
+      for(int y = 0; y < N; y++){
         hash[preferenceMatrix[x+N][y]] = y;
+      }
 
       women.add(Woman(
-        preferenceMatrix[x+N],
+        preferenceMatrix[x+M],
         Q,
         List(),
         List(),
@@ -54,7 +59,7 @@ class AdmissionProblem{
           women[man.preferenceList[man.currentY]-N].holdList.add(x);
         }
       }
-      for(int x = 0; x < N; x++){
+      for(int x = 0; x < M; x++){
         woman = women[x];
 
         if(!(woman.holdList.isEmpty)){

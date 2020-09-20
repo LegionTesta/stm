@@ -7,8 +7,7 @@ void main(){
 
   
   AdmissionProblem stm = AdmissionProblem(
-    MockStableMarriageData.getData(), 
-    N: MockStableMarriageData.getN(),
+    MockStableMarriageData.getData1(), 
     Q: 2
     );
 
