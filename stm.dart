@@ -9,14 +9,11 @@ class AdmissionProblem{
   Índice das mulheres: N a 2*N-1
   */
   final List<List<int>> preferenceMatrix;
-  int N;
-  int M;
+  final int N;
+  final int M;
   final int Q;
 
-  AdmissionProblem(this.preferenceMatrix, {this.N, this.Q}){
-    N = 4;
-    M = 3;
-  }
+  AdmissionProblem({this.preferenceMatrix, this.N, this.M, this.Q});
 
   void makeStableMatch(){
     
@@ -82,9 +79,9 @@ class AdmissionProblem{
       }
       j++;
     }
-      print("\nHomem\tMulher");
+      print("\nProdutor\tTecnico");
       for(int x = 0; x < N; x++){
-        stdout.write("\n$x\t");
+        stdout.write("\n$x\t\t");
         stdout.write("${men[x].currentPartner+N}\t");
       }
       print("");
@@ -196,9 +193,9 @@ class StableMarriage{
       }
     }
 
-    print("Mulher\tHomem");
+    print("Mulher\t\tHomem");
     for(int i = 0; i < N; i++)
-      print("${i+N}\t${wPartner[i]}");
+      print("${i+N}\t\t${wPartner[i]}");
   }
 
   //woman, man
