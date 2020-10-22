@@ -48,23 +48,24 @@ class AdmissionProblem{
 
     int j = 0;
 
-    while(j < 10){
+    while(j < 30){
       for(int x = 0; x < N; x++){
         man = men[x];
         if(man.currentPartner == -1){
           man.currentY++;
-          women[man.preferenceList[man.currentY]-N].holdList.add(x);
+          if(man.currentY >= M) {
+            man.currentPartner == -2;
+          } else {
+            women[man.preferenceList[man.currentY]-N].holdList.add(x);
+          }
         }
       }
       for(int x = 0; x < M; x++){
         woman = women[x];
-
         if(!(woman.holdList.isEmpty)){
-
           woman.holdList.addAll(woman.partners);
           woman.holdList.sort((a, b) => woman.hash[a].compareTo(woman.hash[b]));
           woman.partners = List();
-
           for(int y = 0; y < Q; y++){
             try{
               woman.partners.add(woman.holdList[y]);
@@ -74,7 +75,7 @@ class AdmissionProblem{
           for(int y = Q; y < woman.holdList.length; y++){
             men[woman.holdList[y]].currentPartner = -1;
           }
-          woman.holdList = List();
+          woman.holdList.clear();
         }
       }
       j++;
@@ -82,7 +83,11 @@ class AdmissionProblem{
       print("\nProdutor\tTecnico");
       for(int x = 0; x < N; x++){
         stdout.write("\n$x\t\t");
-        stdout.write("${men[x].currentPartner+N}\t");
+        if(men[x].currentPartner == -2 || men[x].currentPartner == -1) {
+          stdout.write("X\t");
+        } else {
+          stdout.write("${men[x].currentPartner+N}\t");
+        }
       }
       print("");
   }
@@ -193,9 +198,9 @@ class StableMarriage{
       }
     }
 
-    print("Mulher\t\tHomem");
+    print("Produtor\t\Tecnico");
     for(int i = 0; i < N; i++)
-      print("${i+N}\t\t${wPartner[i]}");
+      print("${wPartner[i]}\t\t${i+N}");
   }
 
   //woman, man
